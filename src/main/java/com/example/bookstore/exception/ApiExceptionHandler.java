@@ -30,6 +30,12 @@ public class ApiExceptionHandler {
         return response(HttpStatus.BAD_REQUEST, "Bad request", ex.getMessage(), req, Map.of());
     }
 
+    @ExceptionHandler(PaymentConflictException.class)
+    ResponseEntity<ApiError> paymentConflict(PaymentConflictException ex, HttpServletRequest req) {
+        log.warn("Payment conflict for {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
+        return response(HttpStatus.CONFLICT, "Payment conflict", ex.getMessage(), req, Map.of());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiError> validation(MethodArgumentNotValidException ex, HttpServletRequest req) {
         log.warn("Request validation failed for {} {}", req.getMethod(), req.getRequestURI());
